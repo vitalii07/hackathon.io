@@ -1,0 +1,49 @@
+- for chat in @chats
+	- image_url = chat["picture"]
+	.twitter-article
+		.twitter-pic
+			- if chat["post_type"] == 0
+				%a{:href => "https://twitter.com/#{chat["screen_name"]}", :target => "_blank"}
+					%img{:src => image_url, :height => 48, :width => 48 }
+			- else
+				%a{:href =>"http://hackathon.io/#{chat["screen_name"]}", :target => "_blank"}
+					%img{:src => image_url, :height => 48, :width => 48, :class => "user-pic-medium round-button"}
+		.twitter-text
+			%p
+				- if chat["post_type"] == 0
+					%span.tweetprofilelink
+						%strong
+							%a{href:"http://twitter.com/#{chat["screen_name"]}", :target => "_blank"}
+								= chat["screen_name"]
+							%a{href:"http://twitter.com/#{chat["screen_name"]}", :target => "_blank"}
+								= "@#{chat["screen_name"]}"
+				- else
+					%span.tweetprofilelink
+						%strong
+							%a{href:"http://hackathon.io/#{chat["screen_name"]}", :target => "_blank"}
+								= chat["screen_name"]
+				%span.tweet-time
+					= chat["interval"]
+			.tweet-data
+				!= chat["content"]
+			%br
+			- if chat["post_type"] == 0
+				.tweet-actions
+					%a{href: "https://twitter.com/intent/tweet?in_reply_to=#{chat["tweet_id"]}", :target => "_blank"}
+						.tweet-icon.reply
+					%a{href: "https://twitter.com/intent/retweet?tweet_id=#{chat["tweet_id"]}", :target => "_blank"}
+						.tweet-icon.retweet
+					%a{href: "https://twitter.com/intent/favorite?tweet_id=#{chat["tweet_id"]}", :target => "_blank"}
+						.tweet-icon.favorite
+			- else
+				.tweet-actions
+					-if @user
+						- if chat["parent_id"]
+							%a{:href=>"#", :id=> "replyLink", :data => {:event_id => @event.id, :user_id => @user.id, :parent_id => chat["parent_id"], :slug => @slug, :child => 1}}
+								Reply
+						- else
+							%a{:href=>"#", :id=> "replyLink", :data => {:event_id => @event.id, :user_id => @user.id, :parent_id => chat["id"], :slug => @slug, :child => 0}}
+								Reply
+						%br
+				!= JST["reply_template"]({chats: chat["replies"], user: @user, slug: @slug, event:@event})
+
