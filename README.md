@@ -1,6 +1,5 @@
 http://www.hackathon.io/
 
-Here it is not whole source code of this project. Under the client's agreement, I pushed only common codes.
 You can review my coding style and the quality through some codes here. Also you can check my experience of the following technologies.
 
 1. Single Sign on with Facebook, Twitter, Github, LinkedIn
